@@ -15,6 +15,7 @@ class Card(object):
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
+        self.name = (self.rank + " of " + self.suit)
 
 
 class Deck(object):
@@ -37,7 +38,7 @@ class Deck(object):
     # debug
     def print_deck(self):
         for card in self.list_of_cards:
-            print(card.rank + " of " + card.suit)
+            print(card.name)
 
 
 class Hand(Deck):
