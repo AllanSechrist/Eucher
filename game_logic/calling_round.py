@@ -21,25 +21,36 @@ MUST call trump.
 
 # calling round loop
 
-def calling_round_loop(kitty, list_of_players):
-    print(kitty.list_of_cards[0].name)
-    pass_or_call(list_of_players)
+class CallingRound(object):
+    """
+    creates calling round object
+    """
+
+    def __init__(self, kitty, list_of_players):
+        self.kitty = kitty
+        self.list_of_players = list_of_players
+
+    # manages calling round loop
+    def calling_round_loop(self):
+        print(self.kitty.list_of_cards[0].name)
+        self.pass_or_call()
+
+    # class method that starts logic loop for the games calling round
+    def pass_or_call(self):
+        for player in range(len(self.list_of_players)):
+            player_input = self.get_player_input(player)
+            if player_input == "PASS":
+                continue
+            elif player_input == "TRUMP":
+                print(self.kitty.list_of_cards[0].suit + " has been made trump")
+                # make_trump(self.kitty.list_of_cards[0].suit)
+                break
+            else:
+                print("invalid input")
 
 
-def pass_or_call(list_of_players):
-    for player in range(list_of_players):
-        player_input = get_player_input()
-        if player_input == "PASS":
-            continue
-        elif player_input == "TRUMP":
-            # make_trump()
-            break
-        else:
-            print("invalid input")
-
-
-def get_player_input():
-    player_input = input("PASS or TRUMP? :").upper()
-    return player_input
-
-
+    # method that returns player input
+    def get_player_input(self, get_player):
+        player = get_player + 1
+        player_input = input("player " + str(player) + " PASS or TRUMP? :").upper()
+        return player_input

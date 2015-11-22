@@ -1,6 +1,6 @@
 import cards
 import player
-from game_logic import calling_round
+from game_logic import calling_round, game_loop
 
 list_of_player_objects = []
 PLAYERS = 4
@@ -26,7 +26,8 @@ def main():
         print(card.name)
         print()
 
-    calling_round.calling_round_loop(kitty, list_of_player_objects)
+    calling_round_loop = calling_round.CallingRound(kitty, list_of_player_objects)
+    calling_round_loop.calling_round_loop()
     quit()
 
 if __name__ == "__main__":

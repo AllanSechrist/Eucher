@@ -1,5 +1,5 @@
 import random
-import itertools
+
 
 SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 RANKS = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
