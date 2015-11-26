@@ -4,7 +4,7 @@ until one team scores a total of 10 points, in which case that team wins and the
 ends.
 """
 
-from game_logic import calling_round
+from game_logic import calling_round, play_round
 import cards
 
 

@@ -28,6 +28,7 @@ class Team(object):
     def tricks(self):
         self.tricks = self.players[0].tricks + self.players[1].tricks
 
+
 def create_teams(players):
     team1 = Team((players[0], players[2]))
     team2 = Team((players[1], players[3]))

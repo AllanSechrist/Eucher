@@ -1,3 +1,5 @@
+import cards
+
 """
 During the play round, players take turn player cards, starting with the player to
 the left of the dealer (or the player that took the last trick) until everyone plays all
@@ -11,3 +13,61 @@ have the option of going alone, which must be declared after THEY call trump. If
 to take all 5 tricks alone, the team is awarded 4 points; if they take 3 or 4, they only get 1 point,
 if the other team Euchers them, the other team gets 2 points.
 """
+
+
+class PlayRound(object):
+    """
+    creates playround loop
+    """
+
+    def __init__(self, players):
+        self.players = players
+
+    def play_loop(self):
+        done = False
+
+        # creates a new board at the start of every new play round
+        board = Board()
+
+        track_turn = 0
+        while not done:
+            print("player " + str(track_turn + 1) + " it is your turn")
+
+
+class Board(object):
+    """
+    creates board for card interaction during play round
+    also manages game logic(?)
+    """
+
+    def __init__(self, players):
+        # the board state keeps track of what cards have been played
+        self.board_state = []
+        self.players = players
+
+    def play_card(self, track_turn):
+        played = False
+        while not played:
+            played = self.player_input(track_turn)
+
+    def player_input(self, track_turn):
+        player_hand = self.players[track_turn].hand
+        played = False
+
+        for card in player_hand:
+            print(card)
+
+        player_card = input("please select a card to play: ").upper()
+
+        for card in player_hand:
+            if card.name.upper() == player_card:
+                print("You play " + card.name)
+                self.board_state.append(card)
+                cards.remove_copy(self.board_state, player_hand)
+                played = True
+                break
+
+            else:
+                print("You do not have that card in your hand")
+
+        return played

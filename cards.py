@@ -1,6 +1,5 @@
 import random
 
-
 SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 RANKS = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
 
@@ -53,15 +52,17 @@ class Hand(Deck):
     def __init__(self, list_of_suits, list_of_ranks, size=5):
         Deck.__init__(self, list_of_suits, list_of_ranks, size)
 
+    """
     def remove_copy(self, copied_to, copied_from):
         for card in copied_to:
             for copy in copied_from:
                 if copy == card:
                     copied_from.remove(copy)
+    """
 
     def create_hand(self, deck):
         self.list_of_cards = random.sample(deck, self.size)
-        self.remove_copy(self.list_of_cards, deck)
+        remove_copy(self.list_of_cards, deck)
 
 
 class Kitty(Deck):
@@ -91,5 +92,13 @@ def create_hands(list_of_suits, list_of_ranks, list_of_players, deck):
     kitty = Kitty(list_of_suits, list_of_ranks)
     kitty.create_kitty(deck)
     return kitty
+
+
+def remove_copy(copied_to, copied_from):
+    for card in copied_to:
+        for copy in copied_from:
+            if copy == card:
+                copied_from.remove(copy)
+
 
 deck = Deck(SUITS, RANKS)

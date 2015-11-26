@@ -1,6 +1,6 @@
 import cards
 import player
-from game_logic import calling_round, game_loop
+from game_logic import calling_round, game_loop, play_round
 
 list_of_player_objects = []
 PLAYERS = 4
