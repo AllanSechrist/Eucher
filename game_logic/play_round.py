@@ -25,13 +25,14 @@ class PlayRound(object):
 
     def play_loop(self):
         done = False
-
+        turn = 0
         # creates a new board at the start of every new play round
         board = Board()
 
-        track_turn = 0
         while not done:
-            print("player " + str(track_turn + 1) + " it is your turn")
+            player_turn = self.players[turn]
+            print("player " + str(turn + 1) + " it is your turn")
+            board.play_card(player_turn)
 
 
 class Board(object):
@@ -40,16 +41,18 @@ class Board(object):
     also manages game logic(?)
     """
 
-    def __init__(self, players):
+    def __init__(self):
         # the board state keeps track of what cards have been played
         self.board_state = []
-        self.players = players
+        self.trump = 0
+        self.suit_to_follow = None
 
-    def play_card(self, track_turn):
-        played = False
-        while not played:
-            played = self.player_input(track_turn)
+    def play_card(self, player_turn):
+        card = None
+        while card is None:
+            card = player_turn.play_card(self.board_state, self.suit_to_follow)
 
+    """
     def player_input(self, track_turn):
         player_hand = self.players[track_turn].hand
         played = False
@@ -71,3 +74,4 @@ class Board(object):
                 print("You do not have that card in your hand")
 
         return played
+    """

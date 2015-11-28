@@ -1,12 +1,44 @@
+import cards
+
+
 class Player(object):
     """
     creates the player object
     """
 
-    def __init__(self, dealer=False):
+    def __init__(self):
         self.hand = []
-        self.dealer = dealer
+        self.dealer = False
         self.tricks = 0
+
+    def play_card(self, board, suit_to_follow):
+        for card in self.hand:
+            print(card.name)
+
+        player_card = input("please select a card to play: ").upper()
+        """
+        for card in self.hand:
+            if card.name.upper() == player_card:
+                board.append(card)
+                cards.remove_copy(board, self.hand)
+                return player_card
+        """
+        self.check_follow_suit(suit_to_follow, player_card, board)
+        print("you do not have that card in your hand")
+
+    def check_follow_suit(self, suit_to_follow, player_card, board):
+        for card in self.hand:
+            if card.name.upper() == player_card:
+                if suit_to_follow is not None:
+                    if card.suit != suit_to_follow:
+                        for suit in self.hand:
+                            if suit.suit == suit_to_follow:
+                                print("You have a " + suit_to_follow + " in your hand! You must follow suit!")
+                            else:
+                                return card
+            board.append(card)
+            cards.remove_copy(board, self.hand)
+            return card
 
 
 class Team(object):
