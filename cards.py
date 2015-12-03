@@ -22,9 +22,9 @@ class Deck(object):
     creates a deck of cards
     """
     # there are 4 suits (Hearts, Diamonds, Clubs and Spades) and 7 ranks (9, 10, Jack, Queen, King and Ace)
-    def __init__(self, list_of_suits, list_of_ranks, size=24):
-        self.suits = list_of_suits
-        self.ranks = list_of_ranks
+    def __init__(self, size=24):
+        self.suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
+        self.ranks = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
         self.size = size
         self.list_of_cards = []
 
@@ -49,8 +49,8 @@ class Hand(Deck):
     as a Deck, It is just a description of a grouping of Cards
     """
 
-    def __init__(self, list_of_suits, list_of_ranks, size=5):
-        Deck.__init__(self, list_of_suits, list_of_ranks, size)
+    def __init__(self, size=5):
+        Deck.__init__(self, size)
 
     """
     def remove_copy(self, copied_to, copied_from):
@@ -78,18 +78,18 @@ class Kitty(Deck):
     hand).
     """
 
-    def __init__(self, list_of_suits, list_of_ranks, size=4):
-        Deck.__init__(self, list_of_suits, list_of_ranks, size)
+    def __init__(self, size=4):
+        Deck.__init__(self, size)
 
     def create_kitty(self, deck):
         self.list_of_cards = deck
 
 
-def create_hands(list_of_suits, list_of_ranks, list_of_players, deck):
+def create_hands(list_of_players, deck):
     for player in list_of_players:
-        player.hand = Hand(list_of_suits, list_of_ranks)
+        player.hand = Hand()
         player.hand.create_hand(deck)
-    kitty = Kitty(list_of_suits, list_of_ranks)
+    kitty = Kitty()
     kitty.create_kitty(deck)
     return kitty
 
@@ -101,4 +101,4 @@ def remove_copy(copied_to, copied_from):
                 copied_from.remove(copy)
 
 
-deck = Deck(SUITS, RANKS)
+deck = Deck()

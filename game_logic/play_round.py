@@ -28,11 +28,18 @@ class PlayRound(object):
         turn = 0
         # creates a new board at the start of every new play round
         board = Board()
-
+        """
         while not done:
             player_turn = self.players[turn]
             print("player " + str(turn + 1) + " it is your turn")
-            board.play_card(player_turn)
+            board.get_card(player_turn)
+            # debug
+            done = True
+        """
+        for player in self.players:
+            print("player " + str(turn + 1) + " it is your turn")
+            board.get_card(player)
+            turn += 1
 
 
 class Board(object):
@@ -47,31 +54,23 @@ class Board(object):
         self.trump = 0
         self.suit_to_follow = None
 
-    def play_card(self, player_turn):
+    def get_card(self, player_turn):
         card = None
         while card is None:
-            card = player_turn.play_card(self.board_state, self.suit_to_follow)
+            card = player_turn.play_card(self.suit_to_follow)
 
-    """
-    def player_input(self, track_turn):
-        player_hand = self.players[track_turn].hand
-        played = False
+        print("We have exited the get card loop")
+        self.board_state.append(card)
+        cards.remove_copy(self.board_state, player_turn.hand.list_of_cards)
 
-        for card in player_hand:
-            print(card)
+        if self.suit_to_follow is None:
+            self.suit_to_follow = card.suit
 
-        player_card = input("please select a card to play: ").upper()
-
-        for card in player_hand:
-            if card.name.upper() == player_card:
-                print("You play " + card.name)
-                self.board_state.append(card)
-                cards.remove_copy(self.board_state, player_hand)
-                played = True
-                break
-
-            else:
-                print("You do not have that card in your hand")
-
-        return played
-    """
+        # debug
+        print("We have exited the get card loop")
+        for x in self.board_state:
+            print(x.name)
+            print()
+        for x in player_turn.hand.list_of_cards:
+            print()
+            print(x.name)

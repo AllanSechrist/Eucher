@@ -6,13 +6,13 @@ list_of_player_objects = []
 PLAYERS = 4
 teams = player.create_players(PLAYERS, list_of_player_objects)
 
-
+playround = play_round.PlayRound(list_of_player_objects)
 def main():
     cards.deck.create_deck()
     cards.deck.print_deck()
     print(list_of_player_objects)
     print(teams)
-    kitty = cards.create_hands(cards.SUITS, cards.RANKS, list_of_player_objects, cards.deck.list_of_cards)
+    kitty = cards.create_hands(list_of_player_objects, cards.deck.list_of_cards)
 
     for player in list_of_player_objects:
         print(player.hand)
@@ -28,6 +28,7 @@ def main():
 
     calling_round_loop = calling_round.CallingRound(kitty, list_of_player_objects)
     calling_round_loop.calling_round_loop()
+    playround.play_loop()
     quit()
 
 if __name__ == "__main__":
