@@ -85,6 +85,17 @@ class Kitty(Deck):
         self.list_of_cards = deck
 
 
+class Trick(Deck):
+    """
+    creates a Trick object
+    """
+
+    def __init__(self, size=4):
+        Deck.__init__(self, size)
+
+
+
+
 def create_hands(list_of_players, deck):
     for player in list_of_players:
         player.hand = Hand()

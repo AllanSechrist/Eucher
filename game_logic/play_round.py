@@ -22,24 +22,22 @@ class PlayRound(object):
 
     def __init__(self, players):
         self.players = players
+        self.trump = None
 
     def play_loop(self):
-        done = False
         turn = 0
         # creates a new board at the start of every new play round
         board = Board()
-        """
-        while not done:
-            player_turn = self.players[turn]
-            print("player " + str(turn + 1) + " it is your turn")
-            board.get_card(player_turn)
-            # debug
-            done = True
-        """
+
         for player in self.players:
             print("player " + str(turn + 1) + " it is your turn")
             board.get_card(player)
             turn += 1
+
+        Board().
+
+
+
 
 
 class Board(object):
@@ -51,7 +49,7 @@ class Board(object):
     def __init__(self):
         # the board state keeps track of what cards have been played
         self.board_state = []
-        self.trump = 0
+        self.trump = None
         self.suit_to_follow = None
 
     def get_card(self, player_turn):
@@ -59,7 +57,6 @@ class Board(object):
         while card is None:
             card = player_turn.play_card(self.suit_to_follow)
 
-        print("We have exited the get card loop")
         self.board_state.append(card)
         cards.remove_copy(self.board_state, player_turn.hand.list_of_cards)
 

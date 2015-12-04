@@ -1,5 +1,3 @@
-import cards
-
 
 class Player(object):
     """
@@ -10,6 +8,7 @@ class Player(object):
         self.hand = None
         self.dealer = False
         self.tricks = 0
+        self.played_card = None
 
     def play_card(self, suit_to_follow):
         for card in self.hand.list_of_cards:
@@ -17,9 +16,9 @@ class Player(object):
 
         player_card = input("please select a card to play: ").upper()
 
-        played_card = self.check_card(suit_to_follow, player_card)
+        self.played_card = self.check_card(suit_to_follow, player_card)
 
-        return played_card
+        return self.played_card
 
     def check_card(self, suit_to_follow, player_card):
         selected_card = None
