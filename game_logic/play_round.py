@@ -20,8 +20,9 @@ class PlayRound(object):
     creates playround loop
     """
 
-    def __init__(self, players):
+    def __init__(self, players, teams):
         self.players = players
+        self.teams = teams
         self.trump = None
 
     def play_loop(self):
@@ -30,11 +31,11 @@ class PlayRound(object):
         board = Board()
 
         for player in self.players:
-            print("player " + str(turn + 1) + " it is your turn")
+            print("player " + str(player.player_number) + " it is your turn")
             board.get_card(player)
             turn += 1
 
-        Board().
+        board.determine_trick_winner(self.teams, board.select_highest_card())
 
 
 
@@ -71,3 +72,25 @@ class Board(object):
         for x in player_turn.hand.list_of_cards:
             print()
             print(x.name)
+
+    def select_highest_card(self):
+        card_values = []
+        high_card = None
+        for card in self.board_state:
+            if card.suit is not self.suit_to_follow:
+                continue
+            else:
+                card_values.append(cards.RANKS[card.rank])
+                if cards.RANKS[card.rank] == max(card_values):
+                    high_card = card
+
+        return high_card
+
+    def determine_trick_winner(self, teams, high_card):
+        for team in teams:
+            for player in team.players:
+                if player.played_card == high_card:
+                    player.tricks += 1
+                    print("player " + str(player.player_number) + " took the trick with " + player.played_card.name)
+                print("player number: " + str(player.player_number) + " " + str(player.tricks))
+

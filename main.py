@@ -3,10 +3,19 @@ import player
 from game_logic import calling_round, game_loop, play_round
 
 list_of_player_objects = []
+list_of_team_objects = []
 PLAYERS = 4
-teams = player.create_players(PLAYERS, list_of_player_objects)
+player.create_players(PLAYERS, list_of_player_objects, list_of_team_objects)
+"""
+team1 = player.Team([list_of_player_objects[0], list_of_player_objects[2]])
+team2 = player.Team([list_of_player_objects[1], list_of_player_objects[3]])
 
-playround = play_round.PlayRound(list_of_player_objects)
+list_of_team_objects.append(team1)
+list_of_team_objects.append(team2)
+"""
+playround = play_round.PlayRound(list_of_player_objects, list_of_team_objects)
+
+
 def main():
     cards.deck.create_deck()
     # cards.deck.print_deck()
@@ -30,6 +39,7 @@ def main():
     calling_round_loop.calling_round_loop()
     playround.play_loop()
     quit()
+
 
 if __name__ == "__main__":
     main()

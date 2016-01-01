@@ -1,7 +1,7 @@
 import random
 
 SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
-RANKS = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
+RANKS = {'9': 0, '10': 1, 'Jack': 2, 'Queen': 3, 'King': 4, 'Ace': 5}
 
 
 class Card(object):

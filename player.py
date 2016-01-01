@@ -1,4 +1,3 @@
-
 class Player(object):
     """
     creates the player object
@@ -9,6 +8,7 @@ class Player(object):
         self.dealer = False
         self.tricks = 0
         self.played_card = None
+        self.player_number = 0
 
     def play_card(self, suit_to_follow):
         for card in self.hand.list_of_cards:
@@ -63,6 +63,7 @@ class Team(object):
         self.players = players
         self.score = 0
         self.tricks = 0
+        self.team_number = 0
 
     def scoring(self):
         if self.tricks == 3:
@@ -74,14 +75,38 @@ class Team(object):
         self.tricks = self.players[0].tricks + self.players[1].tricks
 
 
+"""
 def create_teams(players):
-    team1 = Team((players[0], players[2]))
-    team2 = Team((players[1], players[3]))
+    team1 = Team([players[0], players[2]])
+    team2 = Team([players[1], players[3]])
     return team1, team2
+"""
 
 
-def create_players(number_of_players, player_objects):
+def create_team(players, team_objects):
+    team_number = 1
+    teams = [[], []]
+
+    for player in players:
+        if player.player_number % 2 == 0:
+            teams[0].append(player)
+        else:
+            teams[1].append(player)
+
+    for pair in teams:
+        team = Team(pair)
+        team.team_number = team_number
+        team_number += 1
+        team_objects.append(team)
+
+
+def create_players(number_of_players, player_objects, team_objects):
+    player_number = 1
+
     for player in range(number_of_players):
         player = Player()
+        player.player_number = player_number
+        player_number += 1
         player_objects.append(player)
-    return create_teams(player_objects)
+
+    create_team(player_objects, team_objects)
