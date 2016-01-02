@@ -66,12 +66,12 @@ class Team(object):
         self.team_number = 0
 
     def scoring(self):
-        if self.tricks == 3:
+        if self.tricks == 3 or self.tricks == 4:
             self.score += 1
         elif self.tricks == 5:
             self.score += 2
 
-    def tricks(self):
+    def calc_tricks(self):
         self.tricks = self.players[0].tricks + self.players[1].tricks
 
 

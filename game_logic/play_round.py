@@ -26,18 +26,28 @@ class PlayRound(object):
         self.trump = None
 
     def play_loop(self):
-        turn = 0
-        # creates a new board at the start of every new play round
-        board = Board()
+        all_cards_played = False
+        while not all_cards_played:
+            # creates a new board at the start of every new play round
+            board = Board()
 
-        for player in self.players:
-            print("player " + str(player.player_number) + " it is your turn")
-            board.get_card(player)
-            turn += 1
+            for player in self.players:
+                print("player " + str(player.player_number) + " it is your turn")
+                board.get_card(player)
 
-        board.determine_trick_winner(self.teams, board.select_highest_card())
+            board.determine_trick_winner(self.teams, board.select_highest_card())
 
+            for player in self.players:
+                if len(player.hand.list_of_cards) < 1:
+                    all_cards_played = True
 
+        self.award_points()
+
+    def award_points(self):
+        for team in self.teams:
+            team.calc_tricks()
+            team.scoring()
+            print(team.score)
 
 
 
