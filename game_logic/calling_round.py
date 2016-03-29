@@ -33,7 +33,8 @@ class CallingRound(object):
     # manages calling round loop
     def calling_round_loop(self):
         print(self.kitty.list_of_cards[0].name)
-        self.pass_or_call()
+        trump = self.pass_or_call()
+        return trump
 
     # class method that starts logic loop for the games calling round
     def pass_or_call(self):
@@ -42,12 +43,10 @@ class CallingRound(object):
             if player_input == "PASS":
                 continue
             elif player_input == "TRUMP":
-                print(self.kitty.list_of_cards[0].suit + " has been made trump")
-                # make_trump(self.kitty.list_of_cards[0].suit)
-                break
+                print(self.kitty.list_of_cards[0].suit.name + " has been made trump")
+                return self.kitty.list_of_cards[0].suit.name
             else:
                 print("invalid input")
-
 
     # method that returns player input
     def get_player_input(self, get_player):

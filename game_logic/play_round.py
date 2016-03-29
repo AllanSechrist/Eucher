@@ -25,6 +25,12 @@ class PlayRound(object):
         self.teams = teams
         self.trump = None
 
+    def award_points(self):
+        for team in self.teams:
+            team.calc_tricks()
+            team.scoring()
+            print(team.score)
+
     def play_loop(self):
         all_cards_played = False
         while not all_cards_played:
@@ -42,13 +48,6 @@ class PlayRound(object):
                     all_cards_played = True
 
         self.award_points()
-
-    def award_points(self):
-        for team in self.teams:
-            team.calc_tricks()
-            team.scoring()
-            print(team.score)
-
 
 
 class Board(object):
@@ -72,9 +71,9 @@ class Board(object):
         cards.remove_copy(self.board_state, player_turn.hand.list_of_cards)
 
         if self.suit_to_follow is None:
-            self.suit_to_follow = card.suit
+            self.suit_to_follow = card.suit.name
 
-        # debug
+        """
         print("We have exited the get card loop")
         for x in self.board_state:
             print(x.name)
@@ -82,12 +81,13 @@ class Board(object):
         for x in player_turn.hand.list_of_cards:
             print()
             print(x.name)
+        """
 
     def select_highest_card(self):
         card_values = []
         high_card = None
         for card in self.board_state:
-            if card.suit is not self.suit_to_follow:
+            if card.suit.name is not self.suit_to_follow:
                 continue
             else:
                 card_values.append(cards.RANKS[card.rank])
@@ -103,4 +103,3 @@ class Board(object):
                     player.tricks += 1
                     print("player " + str(player.player_number) + " took the trick with " + player.played_card.name)
                 print("player number: " + str(player.player_number) + " " + str(player.tricks))
-

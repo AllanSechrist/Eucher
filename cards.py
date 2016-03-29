@@ -1,115 +1,85 @@
 import random
+import player
 
-SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
-RANKS = {'9': 0, '10': 1, 'Jack': 2, 'Queen': 3, 'King': 4, 'Ace': 5}
+class Suit(object):
+    """
+    creates a suit object
+    """
+    suits = []
+    NAMES = ['hearts', 'diamonds', 'clubs', 'spades']
+
+    def __init__(self, name):
+        self.name = name
+        self.trump = False
+
+        Suit.suits.append(self)
 
 
 class Card(object):
     """
-    creates the card object. In Eucher, only 24 cards are used to play,
-     9 through Ace (Ace being high) of every suit
+    creates a card with a suit and a rank
     """
 
-    # all a card is, is its suit and rank
+    ranks = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
+
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
-        self.name = (self.rank + " of " + self.suit)
+        self.name = rank + " of " + suit.name
 
 
 class Deck(object):
     """
     creates a deck of cards
     """
-    # there are 4 suits (Hearts, Diamonds, Clubs and Spades) and 7 ranks (9, 10, Jack, Queen, King and Ace)
-    def __init__(self, size=24):
-        self.suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
-        self.ranks = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
-        self.size = size
-        self.list_of_cards = []
+    Cards = []
 
-    def create_deck(self):
-        for suit in self.suits:
-            for rank in self.ranks:
-                card = Card(suit, rank)
-                self.list_of_cards.append(card)
+    def __init__(self):
+        Deck.create_suits()
+        Deck.create_cards()
 
-    # debug
-    def print_deck(self):
-        for card in self.list_of_cards:
-            print(card.name)
+    @staticmethod
+    def create_suits():
+        for name in Suit.NAMES:
+            Suit(name)
+
+    @staticmethod
+    def create_cards():
+        for suit in Suit.suits:
+            for rank in Card.ranks:
+                Deck.Cards.append(Card(suit, rank))
+
+    @staticmethod
+    def shuffle():
+        random.shuffle(Deck.Cards)
 
 
-class Hand(Deck):
+class Hand(object):
     """
     creates a hand of cards
-
-    The idea behind making the Hand class a child class of Deck
-    is due to the fact that a Hand of cards has the same function
-    as a Deck, It is just a description of a grouping of Cards
     """
 
-    def __init__(self, size=5):
-        Deck.__init__(self, size)
+    HAND_SIZE = 5
 
-    """
-    def remove_copy(self, copied_to, copied_from):
-        for card in copied_to:
-            for copy in copied_from:
-                if copy == card:
-                    copied_from.remove(copy)
-    """
+    def __init__(self, player):
+        # a list of cards
+        self.cards = []
+        self.make_hand()
+        player.hand = self
 
-    def create_hand(self, deck):
-        self.list_of_cards = random.sample(deck, self.size)
-        remove_copy(self.list_of_cards, deck)
+    def make_hand(self):
+        for slot in range(Hand.HAND_SIZE):
+            Deck.shuffle()
+            self.swap(Deck.Cards[0])
 
-
-class Kitty(Deck):
-    """
-    creates the Kitty object
-
-    In Eucher, the Kitty is the remaining 4 cards in the deck, after the
-    hands have been dealt to the players. The cards in the Kitty remain
-    unknown to all players EXCEPT for the card on top of the Kitty.
-    This card is revealed to all players, locking what players can make
-    Trump until all players have passed or it is ordered up (in which case
-    the suit of the face up card becomes trump and is placed into the dealers
-    hand).
-    """
-
-    def __init__(self, size=4):
-        Deck.__init__(self, size)
-
-    def create_kitty(self, deck):
-        self.list_of_cards = deck
-
-
-class Trick(Deck):
-    """
-    creates a Trick object
-    """
-
-    def __init__(self, size=4):
-        Deck.__init__(self, size)
+    def swap(self, card):
+        Deck.Cards.remove(card)
+        self.cards.append(card)
 
 
 
 
-def create_hands(list_of_players, deck):
-    for player in list_of_players:
-        player.hand = Hand()
-        player.hand.create_hand(deck)
-    kitty = Kitty()
-    kitty.create_kitty(deck)
-    return kitty
+def create_hands():
 
-
-def remove_copy(copied_to, copied_from):
-    for card in copied_to:
-        for copy in copied_from:
-            if copy == card:
-                copied_from.remove(copy)
-
-
-deck = Deck()
+    for person in player.Player.List:
+        Hand(person)
