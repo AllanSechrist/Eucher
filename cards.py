@@ -1,6 +1,7 @@
 import random
 import player
 
+
 class Suit(object):
     """
     creates a suit object
@@ -77,9 +78,6 @@ class Hand(object):
         self.cards.append(card)
 
 
-
-
 def create_hands():
-
     for person in player.Player.List:
         Hand(person)

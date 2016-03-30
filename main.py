@@ -1,9 +1,11 @@
 import cards
 import player
-
+from game_logic import game_logic as gl
 
 
 # anything not in a function is for debug/testing
+
+
 def main():
     decks = cards.Deck()
     player.create_players()
@@ -14,8 +16,7 @@ def main():
 
     player.create_teams()
     cards.create_hands()
-
-
+    gl.calling_round()
 
     print(player.Team.List)
     for team in player.Team.List:

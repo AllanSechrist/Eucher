@@ -17,39 +17,3 @@ allow for the passing round to continue if the dealer does not wish to call, but
 this version will feature the "stab/shaft the dealer" rule in which the dealer
 MUST call trump.
 """
-
-
-# calling round loop
-
-class CallingRound(object):
-    """
-    creates calling round object
-    """
-
-    def __init__(self, kitty, list_of_players):
-        self.kitty = kitty
-        self.list_of_players = list_of_players
-
-    # manages calling round loop
-    def calling_round_loop(self):
-        print(self.kitty.list_of_cards[0].name)
-        trump = self.pass_or_call()
-        return trump
-
-    # class method that starts logic loop for the games calling round
-    def pass_or_call(self):
-        for player in range(len(self.list_of_players)):
-            player_input = self.get_player_input(player)
-            if player_input == "PASS":
-                continue
-            elif player_input == "TRUMP":
-                print(self.kitty.list_of_cards[0].suit.name + " has been made trump")
-                return self.kitty.list_of_cards[0].suit.name
-            else:
-                print("invalid input")
-
-    # method that returns player input
-    def get_player_input(self, get_player):
-        player = get_player + 1
-        player_input = input("player " + str(player) + " PASS or TRUMP? :").upper()
-        return player_input
