@@ -1,13 +1,56 @@
 import cards
 import player
+import random
+
+
+def assign_play_order():
+    play_order = []
+    player_list = player.Player.List
+    for person in player_list:
+        if person.dealer is True:
+            if person.player_number is 0:
+                play_order = [player_list[1], player_list[2], player_list[3], player_list[0]]
+            elif person.player_number is 1:
+                play_order = [player_list[2], player_list[3], player_list[0], player_list[1]]
+            elif person.player_number is 2:
+                play_order = [player_list[3], player_list[0], player_list[1], player_list[2]]
+            elif person.player_number is 3:
+                play_order = [player_list[0], player_list[1], player_list[2], player_list[3]]
+
+    return play_order
+
+
+def assign_dealer(count):
+
+    if count < 1:
+        dealer = random.choice(player.Player.List)
+        dealer.dealer = True
+        count += 1
+        print('player ' + str(dealer.player_number) + ' has been made dealer')
+
+        # debug
+        print(dealer.dealer)
+    else:
+        for person in player.Player.List:
+            if person.player_number is 3 and person.dealer is True:
+                person.dealer = False
+                player.Player.List[0].dealer = True
+            elif person.dealer is True:
+                person.dealer = False
+                player.Player.List[person.player_number + 1].dealer = True
 
 
 def calling_round():
     # creates a loop that manages logic for player selection of the trump suit
     # happens at the start of every new play round
     top_card = cards.Deck.Cards[0]
-    name = top_card.suit.name
+    name = top_card.suit.name  # name of the suit that is on the top of the
+    round_count = 0  # keeps track of number of rounds
 
+    assign_dealer(round_count)
+    play_order = assign_play_order()
+
+    # manages function
     def loop():
         done = False
         while not done:
@@ -19,7 +62,7 @@ def calling_round():
 
     def pass_or_call():
 
-        for p in player.Player.List:
+        for p in play_order:
             done = False
             while not done:
                 player_input = get_player_input(p)
@@ -37,9 +80,10 @@ def calling_round():
         player_input = input('player ' + str(p.player_number) + " PASS or TRUMP? :").upper()
         return player_input
 
+    # conditions after all players pass for the first time change
     def pass_or_call_2():
 
-        for p in player.Player.List:
+        for p in play_order:
             done = False
             while not done:
                 player_input = get_player_input(p)
@@ -58,7 +102,7 @@ def calling_round():
                                 break
                             else:
                                 print('invalid input')
-                                break
+
                 else:
                     print('invalid input')
 
