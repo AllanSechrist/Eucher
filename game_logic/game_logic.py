@@ -70,6 +70,7 @@ def calling_round():
                     done = True
                 elif player_input == 'TRUMP':
                     print(name + " has been made trump")
+                    pick_up_trump()
                     return True
                 else:
                     print('invalid input')
@@ -79,6 +80,22 @@ def calling_round():
     def get_player_input(p):
         player_input = input('player ' + str(p.player_number) + " PASS or TRUMP? :").upper()
         return player_input
+
+    def pick_up_trump():
+        dealers_hand = play_order[3].hand.cards
+        for card in dealers_hand:
+            print(card.name)
+
+        done = False
+        while not done:
+            dealer_input = input('please select a card to discard: ').lower()
+            for card in dealers_hand:
+                if card.name.lower() == dealer_input:
+                    dealers_hand.append(top_card)
+                    cards.Deck.Cards.remove(top_card)
+                    dealers_hand.remove(card)
+                    cards.Deck.Cards.append(card)
+                    done = True
 
     # conditions after all players pass for the first time change
     def pass_or_call_2():
@@ -100,8 +117,7 @@ def calling_round():
                             elif trump_input == name:
                                 print('You cannot call that trump')
                                 break
-                            else:
-                                print('invalid input')
+
 
                 else:
                     print('invalid input')
