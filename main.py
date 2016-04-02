@@ -33,6 +33,8 @@ def main():
     print()
     print(len(decks.Cards))
 
+    quit()
+
 
 if __name__ == "__main__":
     main()

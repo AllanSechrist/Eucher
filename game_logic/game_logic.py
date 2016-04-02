@@ -60,6 +60,13 @@ def calling_round():
     def top_of_kitty():
         print(top_card.name)
 
+    def make_suit_trump(suit_name):
+        for suit in cards.Suit.suits:
+            if suit.name == suit_name:
+                suit.trump = True
+                # debug
+                print(suit.name + ' ' + str(suit.trump))
+
     def pass_or_call():
 
         for p in play_order:
@@ -70,6 +77,7 @@ def calling_round():
                     done = True
                 elif player_input == 'TRUMP':
                     print(name + " has been made trump")
+                    make_suit_trump(name)
                     pick_up_trump()
                     return True
                 else:
@@ -113,13 +121,18 @@ def calling_round():
 
                             if trump_input == suit and suit != name:
                                 print(suit + ' has been made trump')
+                                make_suit_trump(trump_input)
                                 return True
                             elif trump_input == name:
                                 print('You cannot call that trump')
                                 break
 
-
                 else:
                     print('invalid input')
 
     loop()
+
+# ----------START PLAY ROUND LOGIC------------
+
+def play_round():
+    pass
