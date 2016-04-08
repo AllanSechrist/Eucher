@@ -17,6 +17,7 @@ def main():
     player.create_teams()
     cards.create_hands()
     gl.calling_round()
+    gl.play_round()
 
     print(player.Team.List)
     for team in player.Team.List:

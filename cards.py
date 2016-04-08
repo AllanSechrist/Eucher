@@ -21,7 +21,7 @@ class Card(object):
     creates a card with a suit and a rank
     """
 
-    ranks = ['9', '10', 'Jack', 'Queen', 'King', 'Ace']
+    ranks = {'9': 0, '10': 1, 'Jack': 2, 'Queen': 3, 'King': 4, 'Ace': 5}
 
     def __init__(self, suit, rank):
         self.suit = suit
@@ -47,7 +47,7 @@ class Deck(object):
     @staticmethod
     def create_cards():
         for suit in Suit.suits:
-            for rank in Card.ranks:
+            for rank in Card.ranks.keys():
                 Deck.Cards.append(Card(suit, rank))
 
     @staticmethod
