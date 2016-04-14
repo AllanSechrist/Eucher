@@ -12,6 +12,7 @@ class Player(object):
         self.hand = None
         self.tricks = 0
         self.player_number = player_number
+        self.card_played = None
         Player.List.append(self)
 
 

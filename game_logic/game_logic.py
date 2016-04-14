@@ -151,15 +151,39 @@ def calling_round():
 def play_round():
     play_order = assign_play_order()
 
+
+
     board = []
 
     # event loop for play round
     def loop():
+        count = 0
+        done = False
 
-        for player in play_order:
-            play_card(player)
+        while not done:
 
-    def play_card(player):
+            for player in play_order:
+                select_card(player)
+
+            # debug
+            print()
+            for card in board:
+                print(card.name)
+                print(card.ranks[card.rank])
+
+            select_highest_card()
+
+            for player in play_order:
+                if len(player.hand.cards) < 1:
+                    count += 1
+
+            if count > 3:
+                done = True
+                award_points()
+
+
+
+    def select_card(player):
         print()
         print("player " + str(player.player_number) + " please select a card to play")
         print()
@@ -171,33 +195,71 @@ def play_round():
             player_input = input("please select a card to play: ").lower()
             for card in player.hand.cards:
                 if card.name.lower() == player_input:
-                    check_suit(card, player)  # check if player is following suit
-                    board.append(card)
-                    player.hand.cards.remove(card)
-                    done = True
+                    done = check_suit(card, player)  # check if player is following suit
+
+    def play_card(card, player):  # removes selected card from players hand and adds it to the board
+
+        board.append(card)
+        player.hand.cards.remove(card)
+        player.card_played = card
 
     def check_suit(card, player):
+        suit_to_follow = set_suit_to_follow()
+
+        if suit_to_follow is not None:  # checks if suit to follow is None
+            print()
+            print("suit to follow is " + suit_to_follow.name)
+            if card.suit is not suit_to_follow:  # checks selected card's suit to see if it matches suit to follow
+                print()
+                print("card is not suit to follow")
+                for card_in_hand in player.hand.cards:  # checks players hand for cards that match suit to follow
+                    print()
+                    print("checking hand for card that follows suit")
+                    if card_in_hand.suit is suit_to_follow:  # player must follow suit, return False and select again
+                        print("you have a " + suit_to_follow.name + " in your hand! you must follow suit")
+                        return False
+
+                print('playing off suit card')  # shows us that we cannot follow suit, so we can play anything
+
+        play_card(card, player)
+        return True
+
+    def set_suit_to_follow():
         if len(board) > 0:
             suit_to_follow = board[0].suit
         else:
             suit_to_follow = None
+        return suit_to_follow
 
-        if suit_to_follow is not None:
-            print()
-            print("suit to follow is " + suit_to_follow.name)
+    def select_highest_card():
+        card_values = []  # keeps track of card values
+        suit_to_follow = set_suit_to_follow()
+        high_card = None
+        for card in board:
             if card.suit is not suit_to_follow:
-                print()
-                print("card is not suit to follow")
-                for card in player.hand.cards:
-                    print()
-                    print("checking hand for card that follows suit")
-                    if card.suit is suit_to_follow:
-                        print("you have a " + suit_to_follow.name + " in your hand! you must follow suit")
+                continue
+            else:
+                card_values.append(card.ranks[card.rank])
+                if card.ranks[card.rank] == max(card_values):
+                    high_card = card
+
+        award_trick(high_card)
+
+    def award_trick(high_card):
+        for player in play_order:
+            if player.card_played == high_card:
+                player.tricks += 1
+
+    def award_points():
+        for team in player.Team.List:
+            total_tricks = 0
+            for partner in team:
+                total_tricks += partner.tricks
+            if 2 < total_tricks < 5:
+                team.points += 1
+            elif total_tricks == 5:
+                team.points += 2
 
 
     loop()
-    # debug
-    print()
-    for card in board:
-        print(card.name)
 
