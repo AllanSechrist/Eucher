@@ -21,7 +21,6 @@ def assign_play_order():
 
 
 def assign_dealer(count):
-
     if count < 1:
         dealer = random.choice(player.Player.List)  # assign random person to be dealer at game start
         dealer.dealer = True
@@ -134,6 +133,7 @@ def calling_round():
 
                 else:
                     print('invalid input')
+
     """
     def set_trump_value():
         for suit in cards.Suit.suits:
@@ -145,13 +145,12 @@ def calling_round():
 
     loop()
 
-# ----------START PLAY ROUND LOGIC------------
+
+# ///////////////////////////START PLAY ROUND LOGIC///////////////////////////////////////////////////////////////////
 
 
 def play_round():
     play_order = assign_play_order()
-
-
 
     board = []
 
@@ -165,13 +164,15 @@ def play_round():
             for player in play_order:
                 select_card(player)
 
-            # debug
+            # debug ------------------------------
             print()
             for card in board:
                 print(card.name)
                 print(card.ranks[card.rank])
+            # end debug --------------------------
 
-            select_highest_card()
+            select_highest_card()  # picks highest card and awards the trick to the player who played it
+            clean_board()  # resets board for next round of play
 
             for player in play_order:
                 if len(player.hand.cards) < 1:
@@ -180,8 +181,6 @@ def play_round():
             if count > 3:
                 done = True
                 award_points()
-
-
 
     def select_card(player):
         print()
@@ -249,6 +248,8 @@ def play_round():
         for player in play_order:
             if player.card_played == high_card:
                 player.tricks += 1
+                print('player ' + str(player.player_number) + ' took the trick with ' + high_card.name)
+                print('player ' + str(player.player_number) + ' has ' + str(player.tricks) + ' tricks.')
 
     def award_points():
         for team in player.Team.List:
@@ -260,6 +261,8 @@ def play_round():
             elif total_tricks == 5:
                 team.points += 2
 
+    def clean_board():  # empties the board list
+        for card in board[::-1]:
+            board.remove(card)
 
-    loop()
-
+    loop()  # manages play round
