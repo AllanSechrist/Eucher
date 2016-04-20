@@ -3,9 +3,10 @@ import player
 import random
 
 
-def assign_play_order():
+def assign_deal_order():
     play_order = []
     player_list = player.Player.List
+
     for person in player_list:
         if person.dealer is True:
             if person.player_number is 0:  # I'm sure there is a better way to do this, but for now this, to have something that works
@@ -17,6 +18,36 @@ def assign_play_order():
             elif person.player_number is 3:
                 play_order = [player_list[0], player_list[1], player_list[2], player_list[3]]
 
+    return play_order
+
+
+def assign_play_order():
+    play_order = []
+    player_list = player.Player.List
+    for person in player_list:
+
+        if person.took_last_trick is True:
+            if person.player_number is 0:  # I'm sure there is a better way to do this, but for now this, to have something that works
+                play_order = [player_list[0], player_list[1], player_list[2], player_list[3]]
+            elif person.player_number is 1:
+                play_order = [player_list[1], player_list[2], player_list[3], player_list[0]]
+            elif person.player_number is 2:
+                play_order = [player_list[2], player_list[3], player_list[0], player_list[1]]
+            elif person.player_number is 3:
+                play_order = [player_list[3], player_list[0], player_list[1], player_list[2]]
+            person.took_last_trick = False  # ensures that variable is set to False after play order has been set
+        """
+        elif person.dealer is True:
+            if person.player_number is 0:  # I'm sure there is a better way to do this, but for now this, to have something that works
+                play_order = [player_list[1], player_list[2], player_list[3], player_list[0]]
+            elif person.player_number is 1:
+                play_order = [player_list[2], player_list[3], player_list[0], player_list[1]]
+            elif person.player_number is 2:
+                play_order = [player_list[3], player_list[0], player_list[1], player_list[2]]
+            elif person.player_number is 3:
+                play_order = [player_list[0], player_list[1], player_list[2], player_list[3]]
+            person.dealer = False  # sets dealer to False to prevent person being picked twice during play
+        """
     return play_order
 
 
@@ -47,7 +78,7 @@ def calling_round():
     round_count = 0  # keeps track of number of rounds
 
     assign_dealer(round_count)
-    play_order = assign_play_order()
+    play_order = assign_deal_order()
 
     # manages function
     def loop():
@@ -150,16 +181,19 @@ def calling_round():
 
 
 def play_round():
-    play_order = assign_play_order()
-
     board = []
-
     # event loop for play round
+
     def loop():
         count = 0
         done = False
 
         while not done:
+
+            if count == 0:
+                play_order = assign_deal_order()
+            else:
+                play_order = assign_play_order()
 
             for player in play_order:
                 select_card(player)
@@ -174,11 +208,9 @@ def play_round():
             select_highest_card()  # picks highest card and awards the trick to the player who played it
             clean_board()  # resets board for next round of play
 
-            for player in play_order:
-                if len(player.hand.cards) < 1:
-                    count += 1
+            count += 1
 
-            if count > 3:
+            if count > 4:
                 done = True
                 award_points()
 
@@ -245,11 +277,13 @@ def play_round():
         award_trick(high_card)
 
     def award_trick(high_card):
-        for player in play_order:
-            if player.card_played == high_card:
-                player.tricks += 1
-                print('player ' + str(player.player_number) + ' took the trick with ' + high_card.name)
-                print('player ' + str(player.player_number) + ' has ' + str(player.tricks) + ' tricks.')
+        for person in player.Player.List:
+            if person.card_played == high_card:
+                person.tricks += 1
+                print('player ' + str(person.player_number) + ' took the trick with ' + high_card.name)
+                print('player ' + str(person.player_number) + ' has ' + str(person.tricks) + ' tricks.')
+                person.took_last_trick = True
+                print(str(person.took_last_trick) + " player " + str(person.player_number))
 
     def award_points():
         for team in player.Team.List:

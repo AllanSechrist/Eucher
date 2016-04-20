@@ -13,6 +13,7 @@ class Player(object):
         self.tricks = 0
         self.player_number = player_number
         self.card_played = None
+        self.took_last_trick = False
         Player.List.append(self)
 
 
