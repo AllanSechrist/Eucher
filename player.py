@@ -14,6 +14,7 @@ class Player(object):
         self.player_number = player_number
         self.card_played = None
         self.took_last_trick = False
+        self.team = None
         Player.List.append(self)
 
 
@@ -24,23 +25,23 @@ class Team(object):
 
     List = []
 
-    def __init__(self, players):
+    def __init__(self):
         self.points = 0
-        self.players = players
+        self.players = []
         Team.List.append(self)
 
 
 def create_teams():
-    team1 = []
-    team2 = []
+    team1 = Team()
+    team2 = Team()
+
     for player in Player.List:
         if player.player_number is 0 or player.player_number is 2:
-            team1.append(player)
+            player.team = team1
+            team1.players.append(player)
         else:
-            team2.append(player)
-
-    Team(team1)
-    Team(team2)
+            player.team = team2
+            team2.players.append(player)
 
 
 def create_players():

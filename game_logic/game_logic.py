@@ -195,8 +195,8 @@ def play_round():
             else:
                 play_order = assign_play_order()
 
-            for player in play_order:
-                select_card(player)
+            for person in play_order:
+                select_card(person)
 
             # debug ------------------------------
             print()
@@ -213,6 +213,10 @@ def play_round():
             if count > 4:
                 done = True
                 award_points()
+                # debug -----------
+                for team in player.Team.List:
+                    print(team.points)
+                # end debug ---------
 
     def select_card(player):
         print()
@@ -288,12 +292,15 @@ def play_round():
     def award_points():
         for team in player.Team.List:
             total_tricks = 0
-            for partner in team:
-                total_tricks += partner.tricks
-            if 2 < total_tricks < 5:
-                team.points += 1
-            elif total_tricks == 5:
+
+            for person in player.Player.List:
+                if person.team == team:
+                    total_tricks += person.tricks
+
+            if total_tricks is 5:
                 team.points += 2
+            elif total_tricks > 2:
+                team.points += 1
 
     def clean_board():  # empties the board list
         for card in board[::-1]:
