@@ -10,15 +10,16 @@ def main():
     decks = cards.Deck()
     player.create_players()
 
+    """
     print(player.Player.List)
     for player_number in player.Player.List:
         print(player_number.player_number)
-
+    """
     player.create_teams()
     cards.create_hands()
     gl.calling_round()
     gl.play_round()
-
+    """
     print(player.Team.List)
     for team in player.Team.List:
         for person in team.players:
@@ -33,7 +34,7 @@ def main():
         print(card.name)
     print()
     print(len(decks.Cards))
-
+    """
     quit()
 
 

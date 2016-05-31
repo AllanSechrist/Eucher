@@ -22,18 +22,24 @@ class Card(object):
     """
 
     ranks = {'9': 0, '10': 1, 'Jack': 2, 'Queen': 3, 'King': 4, 'Ace': 5}
+    # when a suit is called trump the jack of the suit that shares becomes that suit
+    trump = {'9': 6, '10': 7, 'Queen': 8, 'King': 9, 'Ace': 10, 'Left Bower(Jack)': 11, 'Right Bower(Jack)': 12}
 
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
         self.name = rank + " of " + suit.name
 
+    def switch_jacks(self):
+        if self.rank is 'Jack':
+            pass
 
 class Deck(object):
     """
     creates a deck of cards
     """
     Cards = []
+    Discard = []
 
     def __init__(self):
         Deck.create_suits()

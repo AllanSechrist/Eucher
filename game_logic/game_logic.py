@@ -9,6 +9,7 @@ def assign_deal_order():
 
     for person in player_list:
         if person.dealer is True:
+            play_order = [player_list[(person.player_number+1)%4], ]
             if person.player_number is 0:  # I'm sure there is a better way to do this, but for now this, to have something that works
                 play_order = [player_list[1], player_list[2], player_list[3], player_list[0]]
             elif person.player_number is 1:
@@ -213,6 +214,8 @@ def play_round():
             if count > 4:
                 done = True
                 award_points()
+                clear_trump()
+
                 # debug -----------
                 for team in player.Team.List:
                     print(team.points)
@@ -305,5 +308,10 @@ def play_round():
     def clean_board():  # empties the board list
         for card in board[::-1]:
             board.remove(card)
+            cards.Deck.Discard.append(card)
+
+    def clear_trump():
+        for suit in cards.Suit.suits:
+            suit.trump = False
 
     loop()  # manages play round

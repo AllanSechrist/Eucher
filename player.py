@@ -17,6 +17,9 @@ class Player(object):
         self.team = None
         Player.List.append(self)
 
+class Dealer(Player):
+    pass
+
 
 class Team(object):
     """
@@ -24,6 +27,7 @@ class Team(object):
     """
 
     List = []
+    DBG = False
 
     def __init__(self):
         self.points = 0
@@ -36,6 +40,8 @@ def create_teams():
     team2 = Team()
 
     for player in Player.List:
+        if Team.DBG:
+            print("play")
         if player.player_number is 0 or player.player_number is 2:
             player.team = team1
             team1.players.append(player)
